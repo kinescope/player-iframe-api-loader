@@ -1,11 +1,24 @@
 {
   "private": true,
   "name": "@kinescope/player-iframe-api-loader",
-  "version": "0.1.0",
+  "version": "0.0.1",
+  "description": "Kinescope Player Iframe API loader and TypeScript type definitions",
   "author": "VZH",
   "license": "UNLICENSED",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kinescope/player-iframe-api-loader"
+  },
+  "keywords": [
+    "player",
+    "video",
+    "kinescope",
+    "iframe",
+    "api",
+    "loader"
+  ],
   "scripts": {
     "clean": "rimraf dist/*",
     "build": "npm run clean && tsc -p tsconfig.json"
