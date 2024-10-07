@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.0.5](https://github.com/kinescope/player-iframe-api-loader/compare/v0.0.4...v0.0.5) (2024-10-07)
+
+
+### Miscellaneous Chores
+
+* **main:** release player-iframe-api-loader 0.0.1 ([6ad6313](https://github.com/kinescope/player-iframe-api-loader/commit/6ad63130eb3fdcebfa67ca11df931c3844a0a5c9))
+* **main:** release player-iframe-api-loader 0.0.2 ([87aa434](https://github.com/kinescope/player-iframe-api-loader/commit/87aa4345dcb8437c2b3973669803fe79ce6a9e19))
+* **main:** release player-iframe-api-loader 0.0.3 ([ca1fe4d](https://github.com/kinescope/player-iframe-api-loader/commit/ca1fe4d4bc58be726c26eaa9176a1f6fdf3365ec))
+* **main:** release player-iframe-api-loader 0.0.4 ([797c856](https://github.com/kinescope/player-iframe-api-loader/commit/797c856854c0fb483bf5a4746779ab46280e16b8))
+* make public ([ac48e0c](https://github.com/kinescope/player-iframe-api-loader/commit/ac48e0c4d34b0d12018214630937824aa8e3809a))
+* Update configs ([b221d5d](https://github.com/kinescope/player-iframe-api-loader/commit/b221d5dd6608f90823ab65c8448375312e181a69))
+* update release ([fd34b05](https://github.com/kinescope/player-iframe-api-loader/commit/fd34b05b701b1a4eb42c81d38e00d5e7b326aa50))
+* update release ([2ea8a99](https://github.com/kinescope/player-iframe-api-loader/commit/2ea8a9950ca354878e965b66fd03ff47d9b9a13a))
+* update release ([96632a1](https://github.com/kinescope/player-iframe-api-loader/commit/96632a1702f03d68ae612b8e3281670adad345e5))
+
+
+### Build System
+
+* Add release-please configs ([87c945c](https://github.com/kinescope/player-iframe-api-loader/commit/87c945c5abc047a54e4944868755ca97d9aac8aa))
+
 ## [0.0.4](https://github.com/kinescope/player-iframe-api-loader/compare/player-iframe-api-loader-v0.0.3...player-iframe-api-loader-v0.0.4) (2024-10-07)
 
 
