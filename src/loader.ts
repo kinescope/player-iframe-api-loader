@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/prefer-promise-reject-errors */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import './types';
-   
+
 function isScriptAdded(src: string): boolean {
   const url = src.startsWith('//') ? window.location.protocol + src : src;
   for (let i = 0; i < document.scripts.length; i += 1) {

@@ -1,32 +1,63 @@
 namespace Kinescope {
-  type VideoQuality = number | 'auto';
+  type DefineAll<Enum extends string | number | symbol, T extends Record<Enum, unknown>> = T;
 
-  declare enum PlayerEvents {
-    Ready = 'Ready',
-    CurrentTrackChanged = 'CurrentTrackChanged',
-    SizeChanged = 'SizeChanged',
-    QualityChanged = 'QualityChanged',
-    Play = 'Play',
-    Playing = 'Playing',
-    Pause = 'Pause',
-    Ended = 'Ended',
-    TimeUpdate = 'TimeUpdate',
-    Waiting = 'Waiting',
-    Progress = 'Progress',
-    DurationChange = 'DurationChange',
-    VolumeChange = 'VolumeChange',
-    PlaybackRateChange = 'PlaybackRateChange',
-    Seeked = 'Seeked',
-    SeekChapter = 'SeekChapter',
-    FullscreenChange = 'FullscreenChange',
-    PipChange = 'PipChange',
-    CallAction = 'CallAction',
-    CallBookmark = 'CallBookmark',
-    Error = 'Error',
-    Destroy = 'Destroy',
-  }
+  type PlayerEventKeys =
+    | 'Ready'
+    | 'CurrentTrackChanged'
+    | 'SizeChanged'
+    | 'QualityChanged'
+    | 'Play'
+    | 'Playing'
+    | 'Pause'
+    | 'Ended'
+    | 'TimeUpdate'
+    | 'Waiting'
+    | 'Progress'
+    | 'DurationChange'
+    | 'VolumeChange'
+    | 'PlaybackRateChange'
+    | 'Seeked'
+    | 'SeekChapter'
+    | 'FullscreenChange'
+    | 'PipChange'
+    | 'CallAction'
+    | 'CallBookmark'
+    | 'Error'
+    | 'Destroy';
+
+  type PlayerEvents = DefineAll<
+    PlayerEventKeys,
+    {
+      Ready: 'ready';
+      CurrentTrackChanged: 'currenttrackchanged';
+      SizeChanged: 'sizechanged';
+      QualityChanged: 'qualitychanged';
+      Play: 'play';
+      Playing: 'playing';
+      Pause: 'pause';
+      Ended: 'ended';
+      TimeUpdate: 'timeupdate';
+      Waiting: 'waiting';
+      Progress: 'progress';
+      DurationChange: 'durationchange';
+      VolumeChange: 'volumechange';
+      PlaybackRateChange: 'playbackratechange';
+      Seeked: 'seeked';
+      SeekChapter: 'seekchapter';
+      FullscreenChange: 'fullscreenchange';
+      PipChange: 'pipchange';
+      CallAction: 'callaction';
+      CallBookmark: 'callbookmark';
+      Error: 'error';
+      Destroy: 'destroy';
+    }
+  >;
+
+  declare const PlayerEvents: PlayerEvents;
 
   export declare namespace IframePlayer {
+    export type VideoQuality = number | 'auto';
+
     export interface PlaylistItemOptions {
       /** Заголовок видео-ролика. Отображается в верхней части плеера. */
       title?: string;
@@ -111,24 +142,7 @@ namespace Kinescope {
     }
 
     export interface UpdatablePlayerOptions {
-      /** Настройки UI */
-      ui?: {
-        /** Водяной знак. */
-        watermark?: {
-          /** Текст */
-          text: string;
-          /**
-           * - `stripes` - линиями;
-           * - `random` - в случайных местах;
-           * По умолчанию `random`.
-           */
-          mode?: 'stripes' | 'random';
-          /** Коэффициент масштабирования размера текста в зависимости от размера плеера. По умолчанию `0.25`. */
-          scale?: number;
-          /** Длительность показа/скрытия (мс). Если не указано, текст показывается постоянно. */
-          displayTimeout?: number | { visible: number; hidden: number };
-        };
-      };
+      ui?: Pick<NonNullable<CreateOptions['ui']>, 'watermark'>;
     }
 
     export interface CreateOptions {
@@ -207,6 +221,21 @@ namespace Kinescope {
         mainPlayButton?: boolean;
         /** Показывать ли кнопку выбора скорости воспроизведения. */
         playbackRateButton?: boolean;
+        /** Водяной знак. */
+        watermark?: {
+          /** Текст */
+          text: string;
+          /**
+           * - `stripes` - линиями;
+           * - `random` - в случайных местах;
+           * По умолчанию `random`.
+           */
+          mode?: 'stripes' | 'random';
+          /** Коэффициент масштабирования размера текста в зависимости от размера плеера. По умолчанию `0.25`. */
+          scale?: number;
+          /** Длительность показа/скрытия (мс). Если не указано, текст показывается постоянно. */
+          displayTimeout?: number | { visible: number; hidden: number };
+        };
       };
 
       /** Настройки темы. */
@@ -235,9 +264,9 @@ namespace Kinescope {
     export interface Player {
       readonly Events: Player.Events;
 
-      on<T extends PlayerEvents>(event: T, handler: Player.EventHandler<T>): this;
-      once<T extends PlayerEvents>(event: T, handler: Player.EventHandler<T>): this;
-      off<T extends PlayerEvents>(event: T, handler: Player.EventHandler<T>): this;
+      on<T extends Player.EventType>(event: T, handler: Player.EventHandler<T>): this;
+      once<T extends Player.EventType>(event: T, handler: Player.EventHandler<T>): this;
+      off<T extends Player.EventType>(event: T, handler: Player.EventHandler<T>): this;
 
       isPaused(): Promise<boolean>;
 
@@ -305,12 +334,11 @@ namespace Kinescope {
     }
 
     export namespace Player {
-      export type Events = typeof PlayerEvents;
+      export type EventType = PlayerEvents[keyof PlayerEvents];
+      export type Events = PlayerEvents;
 
-      type DefineAll<Enum extends string | number | symbol, T extends Record<Enum, unknown>> = T;
-
-      type EventMap = DefineAll<
-        PlayerEvents,
+      export type EventMap = DefineAll<
+        EventType,
         {
           [PlayerEvents.Ready]: {
             quality: VideoQuality;
@@ -373,7 +401,7 @@ namespace Kinescope {
         }
       >;
 
-      export type EventHandler<T extends keyof EventMap = keyof EventMap> = (event: {
+      export type EventHandler<T extends EventType = EventType> = (event: {
         readonly type: T;
         readonly target: Player;
         readonly data: EventMap[T];
@@ -388,4 +416,8 @@ namespace Kinescope {
     /** Returns all created players. */
     export function getAll(): readonly IframePlayer.Player[];
   }
+
+  // export type IframePlayer = typeof IframePlayer;
 }
+
+// type Kinescope = typeof Kinescope;
