@@ -46,6 +46,8 @@ jobs:
           corepack enable yarn
           yarn
           yarn run build
+          yarn copyfiles package.json README.md LICENSE CHANGELOG.md .npmignore ./dist/
+          cd ./dist
       - name: Publish to NPM
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
