@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "@kinescope/player-iframe-api-loader",
   "version": "0.0.1",
   "description": "Kinescope Player Iframe API loader and TypeScript type definitions",
