@@ -3,6 +3,8 @@
   "release-type": "node",
   "versioning": "default",
   "initial-version": "0.0.1",
+  "include-component-in-tag": false,
+  "include-v-in-tag": true,
   "changelog-sections": [
     { "type": "feat", "section": "Features", "hidden": false },
     { "type": "feature", "section": "Features", "hidden": false },
