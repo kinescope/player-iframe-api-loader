@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/kinescope/player-iframe-api-loader/compare/player-iframe-api-loader-v0.0.2...player-iframe-api-loader-v0.0.3) (2024-10-07)
+
+
+### Miscellaneous Chores
+
+* make public ([ac48e0c](https://github.com/kinescope/player-iframe-api-loader/commit/ac48e0c4d34b0d12018214630937824aa8e3809a))
+
 ## [0.0.2](https://github.com/kinescope/player-iframe-api-loader/compare/player-iframe-api-loader-v0.0.1...player-iframe-api-loader-v0.0.2) (2024-10-07)
 
 
