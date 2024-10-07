@@ -1,7 +1,32 @@
 namespace Kinescope {
-  export namespace IframePlayer {
-    type VideoQuality = number | 'auto';
+  type VideoQuality = number | 'auto';
 
+  declare enum PlayerEvents {
+    Ready = 'Ready',
+    CurrentTrackChanged = 'CurrentTrackChanged',
+    SizeChanged = 'SizeChanged',
+    QualityChanged = 'QualityChanged',
+    Play = 'Play',
+    Playing = 'Playing',
+    Pause = 'Pause',
+    Ended = 'Ended',
+    TimeUpdate = 'TimeUpdate',
+    Waiting = 'Waiting',
+    Progress = 'Progress',
+    DurationChange = 'DurationChange',
+    VolumeChange = 'VolumeChange',
+    PlaybackRateChange = 'PlaybackRateChange',
+    Seeked = 'Seeked',
+    SeekChapter = 'SeekChapter',
+    FullscreenChange = 'FullscreenChange',
+    PipChange = 'PipChange',
+    CallAction = 'CallAction',
+    CallBookmark = 'CallBookmark',
+    Error = 'Error',
+    Destroy = 'Destroy',
+  }
+
+  export declare namespace IframePlayer {
     export interface PlaylistItemOptions {
       /** Заголовок видео-ролика. Отображается в верхней части плеера. */
       title?: string;
@@ -279,31 +304,6 @@ namespace Kinescope {
       destroy(): Promise<void>;
     }
 
-    enum PlayerEvents {
-      Ready,
-      CurrentTrackChanged,
-      SizeChanged,
-      QualityChanged,
-      Play,
-      Playing,
-      Pause,
-      Ended,
-      TimeUpdate,
-      Waiting,
-      Progress,
-      DurationChange,
-      VolumeChange,
-      PlaybackRateChange,
-      Seeked,
-      SeekChapter,
-      FullscreenChange,
-      PipChange,
-      CallAction,
-      CallBookmark,
-      Error,
-      Destroy,
-    }
-
     export namespace Player {
       export type Events = typeof PlayerEvents;
 
@@ -380,33 +380,12 @@ namespace Kinescope {
       }) => void;
     }
 
-    export declare const version: string;
+    export const version: string;
     /** Create new player. */
-    export declare function create(
-      elementId: string,
-      options: CreateOptions
-    ): Promise<IframePlayer.Player>;
+    export function create(elementId: string, options: CreateOptions): Promise<IframePlayer.Player>;
     /** Returns player by id. */
-    export declare function getById(elementId: string): IframePlayer.Player | undefined;
+    export function getById(elementId: string): IframePlayer.Player | undefined;
     /** Returns all created players. */
-    export declare function getAll(): readonly IframePlayer.Player[];
+    export function getAll(): readonly IframePlayer.Player[];
   }
-
-  // export interface IframePlayer {
-  //   readonly version: string;
-  //   /** Create new player. */
-  //   create(elementId: string, options: IframePlayer.CreateOptions): Promise<IframePlayer.Player>;
-  //   /** Returns player by id. */
-  //   getById(elementId: string): IframePlayer.Player | undefined;
-  //   /** Returns all created players. */
-  //   getAll(): readonly IframePlayer.Player[];
-  // }
 }
-
-// interface Kinescope {
-//   readonly IframePlayer?: Kinescope.IframePlayer | undefined;
-// }
-
-// interface Window {
-//   Kinescope?: Kinescope | undefined;
-// }
