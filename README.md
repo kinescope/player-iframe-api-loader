@@ -42,4 +42,4 @@ if (factory) {
 
 ```
 
-> Player embedding docs: https://docs.kinescope.io/player/latest/iframe/IframePlayerFactory.html#create
+> [Player embedding docs](https://docs.kinescope.io/player/latest/iframe/IframePlayerFactory.html#create)
