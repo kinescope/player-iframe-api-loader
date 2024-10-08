@@ -55,8 +55,20 @@ function loadScript(url: string): Promise<void> {
 /**
  * @param version - `latest` or string in format `v2.123.0`. Defaults to `latest`.
  */
-export async function load(version = 'latest'): Promise<typeof Kinescope.IframePlayer> {
-  if (window.Kinescope?.IframePlayer) return window.Kinescope.IframePlayer;
+export async function load(version = 'latest'): Promise<Kinescope.IframePlayer> {
+  if (window.Kinescope?.IframePlayer) {
+    const prevVersion = window.Kinescope.IframePlayer.version;
+    const isAnotherVersion =
+      version === 'latest'
+        ? (window.Kinescope.IframePlayer as any).isLatestVersion === false
+        : version !== prevVersion;
+    if (isAnotherVersion) {
+      throw new Error(
+        `Another version of the IframeApi is already loaded. Requested version: ${version}, loaded version: ${prevVersion}. Only one version of the IframeApi is allowed.`
+      );
+    }
+    return window.Kinescope.IframePlayer;
+  }
   await loadScript(`https://player.kinescope.io/${version}/iframe.player.js`);
   if (!window.Kinescope?.IframePlayer)
     throw new Error('Something went wrong. IframeApi is not loaded. See previous log messages.');
