@@ -2,14 +2,14 @@ import type { PlayerEvents } from './PlayerEvents';
 
 declare const PlayerEvents: Kinescope.IframePlayer.Player.Events;
 
+export { Kinescope };
+
 declare global {
   namespace Kinescope {
     type DefineAll<
       Enum extends string | number | symbol,
       T extends Record<Enum, unknown>,
     > = keyof T extends Enum ? T : never;
-
-    // declare const PlayerEvents: PlayerEvents;
 
     export namespace IframePlayer {
       export type VideoQuality = number | 'auto';
