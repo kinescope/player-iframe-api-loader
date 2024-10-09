@@ -1,30 +1,6 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "allowJs": false,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
-    "noUncheckedIndexedAccess": false,
-    "skipLibCheck": true,
-    "importHelpers": false,
-    "incremental": true,
-    "outDir": "dist",
-    "baseUrl": "src",
-    "sourceMap": false,
-    "declaration": true,
-    "isolatedDeclarations": true,
-    "verbatimModuleSyntax": false,
-    "typeRoots": [],
-    "types": []
-  },
-  "include": ["src"]
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {},
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.types.json" }]
 }

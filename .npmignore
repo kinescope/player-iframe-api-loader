@@ -1,4 +1,4 @@
-*.tsbuildinfo
 .*
+*.tsbuildinfo
 *tsconfig.json
 src/

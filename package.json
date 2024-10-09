@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "clean": "rimraf dist/*",
-    "build": "npm run clean && tsc -p tsconfig.json"
+    "build": "npm run clean && tsc --build tsconfig.json"
   },
   "devDependencies": {
     "@types/copyfiles": "^2",
