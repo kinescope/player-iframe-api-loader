@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.0.8](https://github.com/kinescope/player-iframe-api-loader/compare/v0.0.7...v0.0.8) (2024-10-08)
+
+
+### Documentation
+
+* Update README ([f9da3f5](https://github.com/kinescope/player-iframe-api-loader/commit/f9da3f50f3ce1b7091ee1b172e75766847fd199a))
+
+
+### Code Refactoring
+
+* Improve types ([9322d7e](https://github.com/kinescope/player-iframe-api-loader/commit/9322d7e4e20cf6374a6744dc2a2b7440a776b1a5))
+* Improve types ([9c51f20](https://github.com/kinescope/player-iframe-api-loader/commit/9c51f20e4da16f7d630d001d3e26ba5559c19b44))
+
 ## [0.0.7](https://github.com/kinescope/player-iframe-api-loader/compare/v0.0.6...v0.0.7) (2024-10-07)
 
 
