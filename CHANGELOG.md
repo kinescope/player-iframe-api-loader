@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.10](https://github.com/kinescope/player-iframe-api-loader/compare/v0.0.9...v0.0.10) (2024-10-11)
+
+
+### Miscellaneous Improvements
+
+* update types ([808e098](https://github.com/kinescope/player-iframe-api-loader/commit/808e09843316d4f3b13467a860df28b7b3621a8d))
+
 ## [0.0.9](https://github.com/kinescope/player-iframe-api-loader/compare/v0.0.8...v0.0.9) (2024-10-09)
 
 
