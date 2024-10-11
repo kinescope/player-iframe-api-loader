@@ -2,15 +2,15 @@ import type { PlayerEvents } from './PlayerEvents';
 
 declare const PlayerEvents: Kinescope.IframePlayer.Player.Events;
 
+type DefineAll<
+  Enum extends string | number | symbol,
+  T extends Record<Enum, unknown>,
+> = keyof T extends Enum ? T : never;
+
 export { Kinescope };
 
 declare global {
   namespace Kinescope {
-    type DefineAll<
-      Enum extends string | number | symbol,
-      T extends Record<Enum, unknown>,
-    > = keyof T extends Enum ? T : never;
-
     export namespace IframePlayer {
       export type VideoQuality = number | 'auto';
 
@@ -367,8 +367,12 @@ declare global {
 
     export interface IframePlayer {
       readonly version: string;
+      readonly playerId: string;
       /** Create new player. */
-      create(elementId: string, options: IframePlayer.CreateOptions): Promise<IframePlayer.Player>;
+      create(
+        elementOrId: HTMLElement | string,
+        options: IframePlayer.CreateOptions
+      ): Promise<IframePlayer.Player>;
       /** Returns player by id. */
       getById(elementId: string): IframePlayer.Player | undefined;
       /** Returns all created players. */
