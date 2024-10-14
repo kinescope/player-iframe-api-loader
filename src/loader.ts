@@ -51,25 +51,43 @@ function loadScript(url: string): Promise<void> {
   });
 }
 
+export function load(version?: string): Promise<Kinescope.IframePlayer>;
+export function load(url: URL): Promise<Kinescope.IframePlayer>;
+
 /**
  * @param version - `latest` or string in format `v2.123.0`. Defaults to `latest`.
  */
-export async function load(version = 'latest'): Promise<Kinescope.IframePlayer> {
+export async function load(version: string | URL = 'latest'): Promise<Kinescope.IframePlayer> {
   if (window.Kinescope?.IframePlayer) {
-    const prevVersion = window.Kinescope.IframePlayer.version;
-    const isAnotherVersion =
-      version === 'latest'
-        ? (window.Kinescope.IframePlayer as any).isLatestVersion === false
-        : version !== prevVersion;
-    if (isAnotherVersion) {
-      throw new Error(
-        `Another version of the IframeApi is already loaded. Requested version: ${version}, loaded version: ${prevVersion}. Only one version of the IframeApi is allowed.`
-      );
+    if (typeof version === 'string') {
+      const prevVersion = window.Kinescope.IframePlayer.version;
+      const isAnotherVersion =
+        version === 'latest'
+          ? (window.Kinescope.IframePlayer as any).isLatestVersion === false
+          : version !== prevVersion;
+      if (isAnotherVersion) {
+        throw new Error(
+          `Another version of the IframeApi is already loaded. Requested version: ${version}, loaded version: ${prevVersion}. Only one version of the IframeApi is allowed.`
+        );
+      }
     }
     return window.Kinescope.IframePlayer;
   }
-  await loadScript(`https://player.kinescope.io/${version}/iframe.player.js`);
+
+  const url =
+    typeof version === 'string'
+      ? `https://player.kinescope.io/${version}/iframe.player.js`
+      : version.toString();
+  await loadScript(url);
+
+  await new Promise<void>((resolve) => {
+    const apiReadyHandlers = window.KinescopeIframeApiReadyHandlers ?? [];
+    window.KinescopeIframeApiReadyHandlers = apiReadyHandlers;
+    apiReadyHandlers.push(resolve);
+  });
+
   if (!window.Kinescope?.IframePlayer)
     throw new Error('Something went wrong. IframeApi is not loaded. See previous log messages.');
+
   return window.Kinescope.IframePlayer;
 }
