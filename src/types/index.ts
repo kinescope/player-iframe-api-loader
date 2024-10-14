@@ -202,6 +202,12 @@ declare global {
             textAlign: 'left' | 'center';
             textLength: 'auto' | number;
           };
+          watermark: {
+            default: {
+              /** CSS color. */
+              color: string;
+            };
+          };
         };
 
         /** Настройки для плеера. */
@@ -214,7 +220,7 @@ declare global {
          * Настройки, относящиеся к ролику: заголовки, субтитры, drm и т.д.
          * См. метод плеера `setPlaylistItemOptions`.
          */
-        playlist: PlaylistItemOptions[];
+        playlist?: PlaylistItemOptions[];
       }
 
       export interface Player {
