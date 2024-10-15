@@ -1,25 +1,26 @@
 // Just for keep import in output.
 import type { Kinescope } from './types';
 
-function isScriptAdded(src: string): boolean {
+function findScript(src: string): HTMLScriptElement | undefined {
   const url = src.startsWith('//') ? window.location.protocol + src : src;
   for (let i = 0; i < document.scripts.length; i += 1) {
     if (document.scripts[i].src === url) {
-      return true;
+      return document.scripts[i];
     }
   }
-  return false;
+  return undefined;
 }
 
-function loadScript(url: string): Promise<void> {
+function loadScript(url: string, testExecuted?: () => boolean): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     try {
-      if (isScriptAdded(url)) {
+      const scriptAdded = findScript(url);
+      if (scriptAdded && (!testExecuted || testExecuted())) {
         resolve();
         return;
       }
 
-      const scriptElement = document.createElement('script');
+      const scriptElement = scriptAdded ?? document.createElement('script');
 
       const done = (): void => {
         scriptElement.removeEventListener('load', onLoad);
@@ -43,20 +44,23 @@ function loadScript(url: string): Promise<void> {
 
       scriptElement.addEventListener('load', onLoad, { once: true });
       scriptElement.addEventListener('error', onError, { once: true });
-      scriptElement.src = url;
-      document.head.appendChild(scriptElement);
+
+      if (!scriptAdded) {
+        scriptElement.src = url;
+        document.head.appendChild(scriptElement);
+      }
     } catch (ex) {
       reject(ex);
     }
   });
 }
 
-export function load(version?: string): Promise<Kinescope.IframePlayer>;
-export function load(url: URL): Promise<Kinescope.IframePlayer>;
-
 /**
  * @param version - `latest` or string in format `v2.123.0`. Defaults to `latest`.
  */
+export function load(version?: string): Promise<Kinescope.IframePlayer>;
+export function load(url: URL): Promise<Kinescope.IframePlayer>;
+
 export async function load(version: string | URL = 'latest'): Promise<Kinescope.IframePlayer> {
   if (window.Kinescope?.IframePlayer) {
     if (typeof version === 'string') {
@@ -76,9 +80,9 @@ export async function load(version: string | URL = 'latest'): Promise<Kinescope.
 
   const url =
     typeof version === 'string'
-      ? `https://player.kinescope.io/${version}/iframe.player.js`
+      ? `https://player.kinescope.io/${version[0] === 'v' ? version : `v${version}`}/iframe.player.js`
       : version.toString();
-  await loadScript(url);
+  await loadScript(url, () => !!window.Kinescope?.IframePlayer);
 
   await new Promise<void>((resolve) => {
     const apiReadyHandlers = window.KinescopeIframeApiReadyHandlers ?? [];
