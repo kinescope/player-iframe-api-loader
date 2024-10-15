@@ -221,6 +221,9 @@ declare global {
          * См. метод плеера `setPlaylistItemOptions`.
          */
         playlist?: PlaylistItemOptions[];
+
+        /** @internal @experimental */
+        readonly keepElement?: boolean;
       }
 
       export interface Player {
