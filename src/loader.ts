@@ -55,6 +55,11 @@ function loadScript(url: string, testExecuted?: () => boolean): Promise<void> {
   });
 }
 
+function normalizeVersion(version: string): string {
+  if (version === 'latest' || version[0] === 'v') return version;
+  return `v${version}`;
+}
+
 /**
  * @param version - `latest` or string in format `v2.123.0`. Defaults to `latest`.
  */
@@ -80,7 +85,7 @@ export async function load(version: string | URL = 'latest'): Promise<Kinescope.
 
   const url =
     typeof version === 'string'
-      ? `https://player.kinescope.io/${version[0] === 'v' ? version : `v${version}`}/iframe.player.js`
+      ? `https://player.kinescope.io/${normalizeVersion(version)}/iframe.player.js`
       : version.toString();
   await loadScript(url, () => !!window.Kinescope?.IframePlayer);
 
