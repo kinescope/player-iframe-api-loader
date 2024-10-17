@@ -14,13 +14,13 @@ function findScript(src: string): HTMLScriptElement | undefined {
 function loadScript(url: string, testExecuted?: () => boolean): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     try {
-      const scriptAdded = findScript(url);
-      if (scriptAdded && (!testExecuted || testExecuted())) {
+      const addedScript = findScript(url);
+      if (addedScript && (!testExecuted || testExecuted())) {
         resolve();
         return;
       }
 
-      const scriptElement = scriptAdded ?? document.createElement('script');
+      const scriptElement = addedScript ?? document.createElement('script');
 
       const done = (): void => {
         scriptElement.removeEventListener('load', onLoad);
@@ -45,7 +45,7 @@ function loadScript(url: string, testExecuted?: () => boolean): Promise<void> {
       scriptElement.addEventListener('load', onLoad, { once: true });
       scriptElement.addEventListener('error', onError, { once: true });
 
-      if (!scriptAdded) {
+      if (!addedScript) {
         scriptElement.src = url;
         document.head.appendChild(scriptElement);
       }
@@ -55,7 +55,9 @@ function loadScript(url: string, testExecuted?: () => boolean): Promise<void> {
   });
 }
 
-function normalizeVersion(version: string): string {
+export type IframeApiVersion = 'latest' | `v2.${number}.${number}` | `2.${number}.${number}`;
+
+function normalizeVersion(version: IframeApiVersion): string {
   if (version === 'latest' || version[0] === 'v') return version;
   return `v${version}`;
 }
@@ -63,17 +65,20 @@ function normalizeVersion(version: string): string {
 /**
  * @param version - `latest` or string in format `v2.123.0`. Defaults to `latest`.
  */
-export function load(version?: string): Promise<Kinescope.IframePlayer>;
-export function load(url: URL): Promise<Kinescope.IframePlayer>;
+export function load(version?: IframeApiVersion): Promise<Kinescope.IframePlayer>;
+export function load(url?: URL): Promise<Kinescope.IframePlayer>;
 
-export async function load(version: string | URL = 'latest'): Promise<Kinescope.IframePlayer> {
+export async function load(
+  version: IframeApiVersion | URL = 'latest'
+): Promise<Kinescope.IframePlayer> {
   if (window.Kinescope?.IframePlayer) {
     if (typeof version === 'string') {
+      const normVersion = normalizeVersion(version);
       const prevVersion = window.Kinescope.IframePlayer.version;
       const isAnotherVersion =
-        version === 'latest'
+        normVersion === 'latest'
           ? (window.Kinescope.IframePlayer as any).isLatestVersion === false
-          : version !== prevVersion;
+          : normVersion !== prevVersion;
       if (isAnotherVersion) {
         throw new Error(
           `Another version of the IframeApi is already loaded. Requested version: ${version}, loaded version: ${prevVersion}. Only one version of the IframeApi is allowed.`
