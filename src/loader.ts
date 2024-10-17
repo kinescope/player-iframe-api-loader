@@ -11,11 +11,11 @@ function findScript(src: string): HTMLScriptElement | undefined {
   return undefined;
 }
 
-function loadScript(url: string, testExecuted?: () => boolean): Promise<void> {
+function loadScript(url: string, isExecuted?: () => boolean): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     try {
       const addedScript = findScript(url);
-      if (addedScript && (!testExecuted || testExecuted())) {
+      if (addedScript && (!isExecuted || isExecuted())) {
         resolve();
         return;
       }
@@ -25,7 +25,9 @@ function loadScript(url: string, testExecuted?: () => boolean): Promise<void> {
       const done = (): void => {
         scriptElement.removeEventListener('load', onLoad);
         scriptElement.removeEventListener('error', onError);
-        scriptElement.remove();
+        if (!addedScript) {
+          scriptElement.remove();
+        }
       };
 
       const onLoad = (): void => {
