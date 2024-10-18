@@ -59,9 +59,9 @@ function loadScript(url: string, isExecuted?: () => boolean): Promise<void> {
 
 export type IframeApiVersion = 'latest' | `v2.${number}.${number}` | `2.${number}.${number}`;
 
-function normalizeVersion(version: IframeApiVersion): string {
-  if (version === 'latest' || version[0] === 'v') return version;
-  return `v${version}`;
+function normalizeVersion(version: string): IframeApiVersion {
+  if (version === 'latest' || version[0] === 'v') return version as IframeApiVersion;
+  return `v${version}` as IframeApiVersion;
 }
 
 /**
@@ -76,7 +76,7 @@ export async function load(
   if (window.Kinescope?.IframePlayer) {
     if (typeof version === 'string') {
       const normVersion = normalizeVersion(version);
-      const prevVersion = window.Kinescope.IframePlayer.version;
+      const prevVersion = normalizeVersion(window.Kinescope.IframePlayer.version);
       const isAnotherVersion =
         normVersion === 'latest'
           ? (window.Kinescope.IframePlayer as any).isLatestVersion === false
