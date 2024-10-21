@@ -35,9 +35,11 @@ Using only types:
 ```ts
 import '@kinescope/player-iframe-api-loader/types';
 
+let player: Kinescope.IframePlayer.Player | undefined;
+
 const factory = window.Kinescope?.IframePlayer;
 if (factory) {
-  const player = await factory.create(...);
+  player = await factory.create(...);
 }
 
 ```
