@@ -306,9 +306,10 @@ declare global {
           EventType,
           {
             [PlayerEvents.Ready]: {
-              quality: VideoQuality;
               currentTime: number;
               duration: number;
+              quality: VideoQuality;
+              audioTrack: string;
             };
             [PlayerEvents.CurrentTrackChanged]: {
               item: { id?: string };
