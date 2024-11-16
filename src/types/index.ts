@@ -327,6 +327,7 @@ declare global {
             [PlayerEvents.Ended]: undefined;
             [PlayerEvents.TimeUpdate]: {
               currentTime: number;
+              percent: number;
             };
             [PlayerEvents.Waiting]: undefined;
             [PlayerEvents.Progress]: {
