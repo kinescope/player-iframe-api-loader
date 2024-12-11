@@ -101,6 +101,15 @@ declare global {
         ui?: Pick<NonNullable<CreateOptions['ui']>, 'watermark'>;
       }
 
+      interface PlaylistOptions {
+        /** Автопереключение роликов в плейлисте. Defaults to `true`. */
+        readonly autoSwitch?: boolean;
+        /** @experimental Initial track in a playlist. PlaylistItem ID. */
+        readonly initialItem?: string;
+        /** Повторять весь плейлист. Defaults to `false`. */
+        readonly loop?: boolean;
+      }
+
       export interface CreateOptions {
         /** Url видео */
         url: string;
@@ -165,6 +174,8 @@ declare global {
           playback?: 'visible';
           /** Выключить звук. */
           muted?: boolean;
+          /** Настройки для плейлиста. */
+          playlist?: PlaylistOptions;
         };
 
         /** Настройки UI */
