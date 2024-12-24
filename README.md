@@ -14,7 +14,7 @@ yarn add @kinescope/player-iframe-api-loader
 
 ## Features
 
-The loader replaces standard way of loading and using Iframe API such as `onKinescopeIframeAPIReady` callback.
+The loader replaces standard way of loading and usage Iframe API such as `onKinescopeIframeAPIReady` callback.
 
 Also the library contains TypeScript type definitions. It is possible to use only TypeScript types without loader.
 
