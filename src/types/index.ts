@@ -174,6 +174,11 @@ declare global {
           playback?: 'visible';
           /** Выключить звук. */
           muted?: boolean;
+          /**
+           * Включать ли субтитры при загрузке видео.
+           * - `true` - автовыбор в следующем порядке: на языке браузера, на языке плеера, первый в списке.
+           * - `string` - включать дорожку с указанным языком. */
+          textTrack?: boolean | string;
           /** Настройки для плейлиста. */
           playlist?: PlaylistOptions;
         };
@@ -209,7 +214,7 @@ declare global {
         theme?: {
           subtitles?: {
             /** Base font size in em. */
-            textSize: number;
+            textSсale: number;
             textAlign: 'left' | 'center';
             textLength: 'auto' | number;
           };
