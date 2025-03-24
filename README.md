@@ -1,6 +1,7 @@
 # Kinescope Player Iframe API Loader
 
 [![npm package](https://img.shields.io/npm/v/@kinescope/player-iframe-api-loader.svg?style=flat-square)](https://www.npmjs.org/package/@kinescope/player-iframe-api-loader)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://kinescope.io/)
 
 A simple loader of JavaScript files ([Iframe API](https://docs.kinescope.io/player/latest/)) and TypeScript types who uses Kinescope Player Iframe API.
 
