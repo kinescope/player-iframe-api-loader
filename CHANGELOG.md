@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.1.0](https://github.com/kinescope/player-iframe-api-loader/compare/v0.0.19...v0.1.0) (2025-03-24)
+
+
+### Features
+
+* Add react KinescopePlayer ([dd608dc](https://github.com/kinescope/player-iframe-api-loader/commit/dd608dc73ccc3c571eac4ac34b46207bc1263dcf))
+
+
+### Miscellaneous Chores
+
+* Create LICENSE ([7158566](https://github.com/kinescope/player-iframe-api-loader/commit/7158566f6d7a81f3525da9f4fb3594361bcd6d15))
+* Merge ([462ce96](https://github.com/kinescope/player-iframe-api-loader/commit/462ce961e25ff385920d422e23d99431099235bb))
+
+
+### Documentation
+
+* Update README ([e0eec71](https://github.com/kinescope/player-iframe-api-loader/commit/e0eec7160b05a04b12818c636ad858d4d157f1f4))
+
 ## [0.0.19](https://github.com/kinescope/player-iframe-api-loader/compare/v0.0.18...v0.0.19) (2025-02-10)
 
 
