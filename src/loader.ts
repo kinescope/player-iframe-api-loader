@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/prefer-promise-reject-errors */
+/* eslint-disable @typescript-eslint/no-use-before-define */
 // Just for keep import in output.
 import type { Kinescope } from './types';
 
@@ -64,6 +66,19 @@ function normalizeVersion(version: string): IframeApiVersion {
   return `v${version}` as IframeApiVersion;
 }
 
+function compareVersion(
+  IframePlayer: Kinescope.IframePlayer,
+  version: IframeApiVersion
+): IframeApiVersion | undefined {
+  const currentVersion = normalizeVersion(IframePlayer.version);
+  const isAnotherVersion =
+    version === 'latest'
+      ? // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+        (IframePlayer as any).isLatestVersion === false
+      : version !== currentVersion;
+  return isAnotherVersion ? currentVersion : undefined;
+}
+
 /**
  * @param version - `latest` or string in format `v2.123.0`. Defaults to `latest`.
  */
@@ -73,27 +88,24 @@ export function load(url?: URL): Promise<Kinescope.IframePlayer>;
 export async function load(
   version: IframeApiVersion | URL = 'latest'
 ): Promise<Kinescope.IframePlayer> {
+  const [normVersion, urlVersion] =
+    typeof version === 'string' ? [normalizeVersion(version), undefined] : [undefined, version];
+
   if (window.Kinescope?.IframePlayer) {
-    if (typeof version === 'string') {
-      const normVersion = normalizeVersion(version);
-      const prevVersion = normalizeVersion(window.Kinescope.IframePlayer.version);
-      const isAnotherVersion =
-        normVersion === 'latest'
-          ? (window.Kinescope.IframePlayer as any).isLatestVersion === false
-          : normVersion !== prevVersion;
-      if (isAnotherVersion) {
+    if (normVersion) {
+      const actualVersion = compareVersion(window.Kinescope.IframePlayer, normVersion);
+      if (actualVersion) {
         throw new Error(
-          `Another version of the IframeApi is already loaded. Requested version: ${version}, loaded version: ${prevVersion}. Only one version of the IframeApi is allowed.`
+          `Another version of the IframeApi is already loaded. Requested version: ${normVersion}, loaded version: ${actualVersion}. Only one version of the IframeApi is allowed.`
         );
       }
     }
     return window.Kinescope.IframePlayer;
   }
 
-  const url =
-    typeof version === 'string'
-      ? `https://player.kinescope.io/${normalizeVersion(version)}/iframe.player.js`
-      : version.toString();
+  const url = urlVersion
+    ? urlVersion.toString()
+    : `https://player.kinescope.io/${normVersion}/iframe.player.js`;
   await loadScript(url, () => !!window.Kinescope?.IframePlayer);
 
   await new Promise<void>((resolve) => {
