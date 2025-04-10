@@ -66,7 +66,7 @@ declare global {
           title: string;
           description?: string;
           /** Возможность закрыть/пропустить. */
-          skipable?: boolean;
+          skippable?: boolean;
           buttonStyle?: object;
           /** Срабатывание CTA */
           trigger: {
