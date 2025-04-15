@@ -24,10 +24,12 @@ type PlayerEventKeys =
   | 'PipChange'
   | 'CallAction'
   | 'CallBookmark'
+  | 'AdBreakStateChanged'
+  | 'ControlBarVisibilityChanged'
   | 'Error'
   | 'Destroy';
 
-export type PlayerEvents = DefineAll<
+type PlayerEvents = DefineAll<
   PlayerEventKeys,
   {
     readonly Ready: unique symbol;
@@ -50,11 +52,17 @@ export type PlayerEvents = DefineAll<
     readonly PipChange: unique symbol;
     readonly CallAction: unique symbol;
     readonly CallBookmark: unique symbol;
+    /** @experimental */
+    readonly AdBreakStateChanged: unique symbol;
+    /** @experimental */
+    readonly ControlBarVisibilityChanged: unique symbol;
     readonly Error: unique symbol;
     readonly Destroy: unique symbol;
   }
 >;
 
-export namespace PlayerEvents {
+namespace PlayerEvents {
   export type Type = PlayerEvents[keyof PlayerEvents];
 }
+
+export type { PlayerEvents };

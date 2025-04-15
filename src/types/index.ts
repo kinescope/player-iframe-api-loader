@@ -7,6 +7,7 @@ type DefineAll<
   T extends Record<Enum, unknown>,
 > = keyof T extends Enum ? T : never;
 
+// eslint-disable-next-line @typescript-eslint/no-use-before-define
 export { Kinescope };
 
 declare global {
@@ -63,11 +64,14 @@ declare global {
         /** @experimental Призывы к действию (CTA). */
         cta?: {
           id: string;
-          title: string;
+          title?: string;
           description?: string;
           /** Возможность закрыть/пропустить. */
           skippable?: boolean;
-          buttonStyle?: object;
+          button: {
+            text: string;
+            style?: object;
+          };
           /** Срабатывание CTA */
           trigger: {
             /** Процент текущего времени, например: `[0, 100]`. */
@@ -377,6 +381,12 @@ declare global {
               id: string;
               time: number;
             };
+            [PlayerEvents.AdBreakStateChanged]: {
+              active: true;
+            };
+            [PlayerEvents.ControlBarVisibilityChanged]: {
+              visible: boolean;
+            };
             [PlayerEvents.Error]: {
               error: unknown;
             };
@@ -411,5 +421,6 @@ declare global {
     readonly IframePlayer?: Kinescope.IframePlayer;
   }
 
+  // eslint-disable-next-line vars-on-top, no-var
   var Kinescope: Kinescope | undefined;
 }
