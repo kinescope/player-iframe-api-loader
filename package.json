@@ -1,6 +1,6 @@
 {
   "name": "@kinescope/player-iframe-api-loader",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Kinescope Player Iframe API loader and TypeScript type definitions",
   "author": "VZH (https://github.com/vlazh)",
   "license": "Apache-2.0",
