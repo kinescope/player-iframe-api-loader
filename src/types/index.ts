@@ -120,11 +120,11 @@ declare global {
 
       interface PlaylistOptions {
         /** Автопереключение роликов в плейлисте. Defaults to `true`. */
-        readonly autoSwitch?: boolean;
+        autoSwitch?: boolean;
         /** @experimental Initial track in a playlist. PlaylistItem ID. */
-        readonly initialItem?: string;
+        initialItem?: string;
         /** Повторять весь плейлист. Defaults to `false`. */
-        readonly loop?: boolean;
+        loop?: boolean;
       }
 
       export interface CreateOptions {
@@ -256,7 +256,7 @@ declare global {
         playlist?: PlaylistItemOptions[];
 
         /** @internal @experimental */
-        readonly keepElement?: boolean;
+        keepElement?: boolean;
       }
 
       export interface Player {
