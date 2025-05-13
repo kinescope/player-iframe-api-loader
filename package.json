@@ -32,14 +32,14 @@
     "@eslint/js": "9.26.0",
     "@js-toolkit/configs": "3.94.2",
     "@js-toolkit/react-hooks": "1.52.4",
-    "@types/react": "19.1.2",
+    "@types/react": "19.1.4",
     "copyfiles": "2.4.1",
-    "esbuild": "0.25.3",
+    "esbuild": "0.25.4",
     "esbuild-plugin-tsc": "0.5.0",
     "eslint": "9.26.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-config-prettier": "10.1.2",
+    "eslint-config-prettier": "10.1.5",
     "eslint-config-standard": "17.1.0",
     "eslint-import-resolver-typescript": "4.3.4",
     "eslint-plugin-import": "2.31.0",
@@ -52,7 +52,7 @@
     "react": "19.1.0",
     "rimraf": "6.0.1",
     "typescript": "5.8.3",
-    "typescript-eslint": "8.31.1"
+    "typescript-eslint": "8.32.1"
   },
   "packageManager": "yarn@4.9.1"
 }
