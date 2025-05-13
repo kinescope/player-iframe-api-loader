@@ -75,11 +75,11 @@ declare global {
           /** Срабатывание CTA */
           trigger: {
             /** Процент текущего времени, например: `[0, 100]`. */
-            percentages: number[];
+            percentages?: number[];
             /** Точки времени (сек.), например: `[60, 600]`. */
-            timePoints: number[];
+            timePoints?: number[];
             /** На паузе */
-            pause: boolean;
+            pause?: boolean;
           };
         }[];
 
@@ -92,12 +92,25 @@ declare global {
         };
 
         /** Реклама. */
-        ad?: {
-          /** Url рекламного тега. */
-          adTagUrl: string;
-          // Или
-          /** @experimental Готовый текст рекламного тега. */
-          adTag: string;
+        ad?: (
+          | {
+              /** Url рекламного тега. */
+              adTagUrl: string | string[];
+            }
+          | {
+              /** @experimental Готовый текст рекламного тега. */
+              adTag: string | string[];
+            }
+        ) & {
+          /** Срабатывание рекламы. */
+          trigger?: {
+            /** Процент текущего времени, например: `[0, 100]`. */
+            percentages?: number[];
+            /** Точки времени (сек.), например: `[60, 600]`. */
+            timePoints?: number[];
+            /** Повтор (сек), например: `600`, каждые 10 мин. */
+            interval?: number;
+          };
         };
       }
 
