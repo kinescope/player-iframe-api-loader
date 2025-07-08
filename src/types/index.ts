@@ -241,6 +241,10 @@ declare global {
               color: string;
             };
           };
+          colors: {
+            /** Цвет плеера. Например: #4caf50. */
+            primary: string;
+          };
         };
 
         /** Настройки для плеера. */
