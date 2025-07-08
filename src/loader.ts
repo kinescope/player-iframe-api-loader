@@ -5,7 +5,8 @@ import type { Kinescope } from './types';
 
 function findScript(src: string): HTMLScriptElement | undefined {
   const url = src.startsWith('//') ? window.location.protocol + src : src;
-  for (let i = 0; i < document.scripts.length; i += 1) {
+  const { length } = document.scripts;
+  for (let i = 0; i < length; i += 1) {
     if (document.scripts[i].src === url) {
       return document.scripts[i];
     }
