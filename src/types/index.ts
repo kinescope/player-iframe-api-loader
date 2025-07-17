@@ -15,6 +15,27 @@ declare global {
     export namespace IframePlayer {
       export type VideoQuality = number | 'auto';
 
+      interface AdItemYaOptions {
+        // См. https://yandex.ru/dev/video-sdk/doc/ru/sdk-html5/AdConfig-interface
+        adConfig: Record<string, unknown>;
+        // См. https://yandex.ru/dev/video-sdk/doc/ru/sdk-html5/PlaybackParameters-interface
+        playbackParameters?: Record<string, unknown>;
+      }
+
+      type AdItemOptions =
+        | {
+            /** Url рекламного тега. */
+            adTagUrl: string | string[];
+          }
+        | {
+            /** @experimental Готовый текст рекламного тега. */
+            adTag: string | string[];
+          }
+        | {
+            /** @experimental Настройки для Yandex Video Ads SDK. */
+            yaOptions: AdItemYaOptions | AdItemYaOptions[];
+          };
+
       export interface PlaylistItemOptions {
         /** Заголовок видео-ролика. Отображается в верхней части плеера. */
         title?: string;
@@ -92,26 +113,19 @@ declare global {
         };
 
         /** Реклама. */
-        ad?: (
-          | {
-              /** Url рекламного тега. */
-              adTagUrl: string | string[];
-            }
-          | {
-              /** @experimental Готовый текст рекламного тега. */
-              adTag: string | string[];
-            }
-        ) & {
-          /** Срабатывание рекламы. */
-          trigger?: {
-            /** Процент текущего времени, например: `[0, 100]`. */
-            percentages?: number[];
-            /** Точки времени (сек.), например: `[60, 600]`. */
-            timePoints?: number[];
-            /** Повтор (сек), например: `600`, каждые 10 мин. */
-            interval?: number;
-          };
-        };
+        ad?:
+          | AdItemOptions
+          | (AdItemOptions & {
+              /** Срабатывание рекламы. */
+              trigger: {
+                /** Процент текущего времени, например: `[0, 100]`. */
+                percentages?: number[];
+                /** Точки времени (сек.), например: `[60, 600]`. */
+                timePoints?: number[];
+                /** Повтор (сек), например: `600`, каждые 10 мин. */
+                interval?: number;
+              };
+            })[];
       }
 
       export interface UpdatablePlayerOptions {
@@ -438,6 +452,6 @@ declare global {
     readonly IframePlayer?: Kinescope.IframePlayer;
   }
 
-  // eslint-disable-next-line vars-on-top, no-var
+  // eslint-disable-next-line vars-on-top
   var Kinescope: Kinescope | undefined;
 }
