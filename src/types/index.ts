@@ -441,10 +441,6 @@ declare global {
         elementOrId: HTMLElement | string,
         options: IframePlayer.CreateOptions
       ): Promise<IframePlayer.Player>;
-      /** Returns player by id. */
-      getById(elementId: string): IframePlayer.Player | undefined;
-      /** Returns all created players. */
-      getAll(): readonly IframePlayer.Player[];
     }
   }
 
