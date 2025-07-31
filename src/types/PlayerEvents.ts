@@ -26,6 +26,7 @@ type PlayerEventKeys =
   | 'CallBookmark'
   | 'AdBreakStateChanged'
   | 'ControlBarVisibilityChanged'
+  | 'FullscreenActionPerformed'
   | 'Error'
   | 'Destroy';
 
@@ -56,6 +57,8 @@ type PlayerEvents = DefineAll<
     readonly AdBreakStateChanged: unique symbol;
     /** @experimental */
     readonly ControlBarVisibilityChanged: unique symbol;
+    /** @experimental */
+    readonly FullscreenActionPerformed: unique symbol;
     readonly Error: unique symbol;
     readonly Destroy: unique symbol;
   }

@@ -418,6 +418,7 @@ declare global {
             [PlayerEvents.ControlBarVisibilityChanged]: {
               visible: boolean;
             };
+            [PlayerEvents.FullscreenActionPerformed]: undefined;
             [PlayerEvents.Error]: {
               error: unknown;
             };
