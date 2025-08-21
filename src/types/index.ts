@@ -277,6 +277,11 @@ declare global {
         keepElement?: boolean;
       }
 
+      interface SwitchToOptions {
+        autoPlay?: boolean;
+        time?: number;
+      }
+
       export interface Player {
         readonly Events: Player.Events;
 
@@ -336,7 +341,7 @@ declare global {
 
         getPlaylistItem(): Promise<{ readonly id: string | undefined } | undefined>;
 
-        switchTo(id: string): Promise<void>;
+        switchTo(id: string, options?: SwitchToOptions): Promise<void>;
 
         next(): Promise<void>;
 
