@@ -1,6 +1,7 @@
 {
   "extends": "@js-toolkit/configs/ts/common.tsconfig.json",
   "compilerOptions": {
+    "target": "es2015",
     "importHelpers": false,
     "incremental": false,
     "sourceMap": false,
