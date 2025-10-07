@@ -220,7 +220,7 @@ declare global {
         /** Настройки UI */
         ui?: {
           /** Язык плеера. По умолчанию язык браузера или английский язык. */
-          language?: 'ru' | 'en';
+          language?: 'ru' | 'en' | 'es' | 'pt' | 'pt-BR';
           /** Показывать ли элементы управления плеером. По умолчанию `true`. */
           controls?: boolean;
           /** Большая кнопка Play в центре плеера, по умолчанию `true`. */
@@ -268,6 +268,12 @@ declare global {
         settings?: {
           /** Какой-либо пользовательский идентификатор. Используется для отправки метрик. */
           externalId?: string;
+          /** @experimental */
+          actionOverrides?: {
+            fullscreen?: 'event';
+            screenshot?: 'event';
+            transcription?: 'event';
+          };
         };
 
         /**
@@ -427,6 +433,8 @@ declare global {
               visible: boolean;
             };
             [PlayerEvents.FullscreenActionPerformed]: undefined;
+            [PlayerEvents.ScreenshotActionPerformed]: undefined;
+            [PlayerEvents.TranscriptionActionPerformed]: undefined;
             [PlayerEvents.Error]: {
               error: unknown;
             };

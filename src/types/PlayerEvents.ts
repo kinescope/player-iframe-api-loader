@@ -27,6 +27,8 @@ type PlayerEventKeys =
   | 'AdBreakStateChanged'
   | 'ControlBarVisibilityChanged'
   | 'FullscreenActionPerformed'
+  | 'ScreenshotActionPerformed'
+  | 'TranscriptionActionPerformed'
   | 'Error'
   | 'Destroy';
 
@@ -59,6 +61,10 @@ type PlayerEvents = DefineAll<
     readonly ControlBarVisibilityChanged: unique symbol;
     /** @experimental */
     readonly FullscreenActionPerformed: unique symbol;
+    /** @experimental */
+    readonly ScreenshotActionPerformed: unique symbol;
+    /** @experimental */
+    readonly TranscriptionActionPerformed: unique symbol;
     readonly Error: unique symbol;
     readonly Destroy: unique symbol;
   }
