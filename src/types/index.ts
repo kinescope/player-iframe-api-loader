@@ -227,6 +227,11 @@ declare global {
           mainPlayButton?: boolean;
           /** Показывать ли кнопку выбора скорости воспроизведения. */
           playbackRateButton?: boolean;
+          fullscreenButton?: boolean;
+          /** @experimental */
+          screenshotButton?: boolean;
+          /** @experimental */
+          transcriptionButton?: boolean;
           /** Водяной знак. */
           watermark?: {
             /** Текст */
