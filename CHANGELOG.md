@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/kinescope/player-iframe-api-loader/compare/v0.5.0...v0.6.0) (2025-10-07)
+
+
+### Features
+
+* Set target to es2015 ([02018a4](https://github.com/kinescope/player-iframe-api-loader/commit/02018a47717001aab827376ddd3f7d80d96cd3c6))
+
 ## [0.5.0](https://github.com/kinescope/player-iframe-api-loader/compare/v0.4.0...v0.5.0) (2025-10-07)
 
 
