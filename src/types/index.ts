@@ -375,6 +375,13 @@ declare global {
         export type EventMap = DefineAll<
           EventType,
           {
+            [PlayerEvents.LoadStart]: undefined;
+            [PlayerEvents.Loaded]: {
+              currentTime: number;
+              duration: number;
+              quality: VideoQuality;
+              audioTrack: string;
+            };
             [PlayerEvents.Ready]: {
               currentTime: number;
               duration: number;

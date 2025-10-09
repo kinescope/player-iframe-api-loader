@@ -4,6 +4,8 @@ type DefineAll<
 > = keyof T extends Enum ? T : never;
 
 type PlayerEventKeys =
+  | 'LoadStart'
+  | 'Loaded'
   | 'Ready'
   | 'CurrentTrackChanged'
   | 'SizeChanged'
@@ -35,6 +37,9 @@ type PlayerEventKeys =
 type PlayerEvents = DefineAll<
   PlayerEventKeys,
   {
+    readonly LoadStart: unique symbol;
+    readonly Loaded: unique symbol;
+    /** @deprecated Use `Loaded`. */
     readonly Ready: unique symbol;
     readonly CurrentTrackChanged: unique symbol;
     readonly SizeChanged: unique symbol;
