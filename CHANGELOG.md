@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/kinescope/player-iframe-api-loader/compare/v0.7.1...v0.8.0) (2025-10-09)
+
+
+### Features
+
+* Add LoadStart, Loaded events ([9a50d34](https://github.com/kinescope/player-iframe-api-loader/commit/9a50d3456a330c037dd99cf4b35f913eb3cdd351))
+
 ## [0.7.1](https://github.com/kinescope/player-iframe-api-loader/compare/v0.7.0...v0.7.1) (2025-10-07)
 
 
