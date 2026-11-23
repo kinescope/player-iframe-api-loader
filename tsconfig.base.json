@@ -1,14 +1,16 @@
 {
   "extends": "@js-toolkit/configs/ts/common.tsconfig.json",
   "compilerOptions": {
-    "target": "es2015",
+    "target": "es2020",
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "importHelpers": false,
     "incremental": false,
     "sourceMap": false,
     "declaration": true,
     "typeRoots": [],
     "types": [],
-    "outDir": "dist",
-    "baseUrl": "src"
+    "outDir": "dist"
   }
 }
