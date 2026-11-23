@@ -1,3 +1,15 @@
+# Releases with release-please and stages the package on npm.
+#
+# - release-please keeps a release PR open; merging it creates the tag and the GitHub Release.
+# - Auth: npm Trusted Publishing (OIDC), no npm token. The trusted publisher on npmjs.com must
+#   point to this repository and this workflow file (`release-please.yml`) and allow only
+#   `npm stage publish`.
+# - Staged publishing: the package is not installable until a package owner approves it with 2FA
+#   (npmjs.com → package → Staged Packages, or `npm stage approve <stage-id>`).
+#   The stage id is in the job summary.
+#
+# Third-party code (yarn install, tests, build) runs only in the `build` job, which has no
+# id-token; the `stage` job only stages the tarball built there.
 name: release-please
 
 on:
@@ -5,49 +17,138 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
+concurrency:
+  group: release-please
+  cancel-in-progress: false
+
 jobs:
-  tag-new-version:
+  release:
     permissions:
       contents: write
       pull-requests: write
     runs-on: ubuntu-latest
     outputs:
-      release_created: ${{ steps.release-flag.outputs.release_created }}
-      release_tag: ${{ steps.release-tag.outputs.release_tag }}
+      release_created: ${{ steps.release.outputs.release_created || false }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
-      - name: Create Release Tag
-        uses: googleapis/release-please-action@v4
-        id: tag
+      - uses: googleapis/release-please-action@v4
+        id: release
         with:
           config-file: .release-please-config.json
           manifest-file: .release-please-manifest.json
-      - id: release-flag
-        run: echo "release_created=${{ steps.tag.outputs.release_created || false }}" >> $GITHUB_OUTPUT
-      - id: release-tag
-        run: echo "release_tag=${{ steps.tag.outputs.version || false }}" >> $GITHUB_OUTPUT
-      - id: release-debug
-        run: echo "$GITHUB_CONTEXT"
 
-  publish-release:
-    needs: tag-new-version
-    if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
+  build:
+    needs: release
+    if: ${{ needs.release.outputs.release_created == 'true' }}
     runs-on: ubuntu-latest
+    outputs:
+      dist-tag: ${{ steps.version.outputs.dist-tag }}
+      tarball: ${{ steps.pack.outputs.tarball }}
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
         with:
-          node-version: 20
-          registry-url: https://registry.npmjs.org/
-          scope: '@kinescope'
-      - name: Build Packages
-        run: |
-          corepack enable yarn
-          yarn
-          yarn run build
-          yarn copyfiles package.json README.md LICENSE CHANGELOG.md .npmignore ./dist/
-      - name: Publish to NPM
+          ref: ${{ needs.release.outputs.tag_name }}
+          persist-credentials: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Check tag and version
+        id: version
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-        run: cd ./dist && npm publish --access public
+          TAG_NAME: ${{ needs.release.outputs.tag_name }}
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if [ "$TAG_NAME" != "v$VERSION" ]; then
+            echo "::error::Release tag '$TAG_NAME' does not match package.json version 'v$VERSION'."
+            exit 1
+          fi
+          case "$VERSION" in
+            *-*) DIST_TAG=next ;;
+            *)   DIST_TAG=latest ;;
+          esac
+          echo "dist-tag=$DIST_TAG" >> "$GITHUB_OUTPUT"
+          echo "Publishing $VERSION to '$DIST_TAG'"
+
+      - run: corepack enable yarn
+      - run: yarn install --immutable
+      - run: yarn lint
+      - run: yarn typecheck
+      - run: yarn test
+      - run: yarn build
+      - run: yarn check:package
+
+      - name: Pack
+        id: pack
+        working-directory: dist
+        run: |
+          TARBALL=$(npm pack --silent | tail -n 1)
+          mv "$TARBALL" ..
+          echo "tarball=$TARBALL" >> "$GITHUB_OUTPUT"
+          tar -tzf "../$TARBALL"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: package
+          path: ${{ steps.pack.outputs.tarball }}
+          if-no-files-found: error
+          retention-days: 7
+
+  stage:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # npm Trusted Publishing (OIDC) and provenance
+    steps:
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24 # latest 24.x ships npm >= 11.15.0 required by `npm stage`
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Check npm version
+        run: |
+          NPM_VERSION=$(npm --version)
+          node -e '
+            const [major, minor] = process.argv[1].split(".").map(Number);
+            if (major < 11 || (major === 11 && minor < 15)) {
+              console.log(`::error::npm ${process.argv[1]} is too old: npm stage publish needs >= 11.15.0.`);
+              process.exit(1);
+            }
+          ' "$NPM_VERSION"
+          echo "npm $NPM_VERSION"
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: package
+
+      - name: Stage
+        shell: bash
+        env:
+          TARBALL: ${{ needs.build.outputs.tarball }}
+          DIST_TAG: ${{ needs.build.outputs.dist-tag }}
+        # provenance is generated automatically with Trusted Publishing
+        run: |
+          npm stage publish "./$TARBALL" --access public --tag "$DIST_TAG" | tee stage.log
+          STAGE_ID=$(grep -oE 'staged with id [0-9a-fA-F-]+' stage.log | awk '{print $4}' | tail -n 1 || true)
+          NAME_VERSION=$(tar -xzOf "$TARBALL" package/package.json | node -e "const p=JSON.parse(require('fs').readFileSync(0));console.log(p.name+'@'+p.version)")
+          {
+            echo "## Staged $NAME_VERSION (\`$DIST_TAG\`)"
+            echo
+            echo "The package is not published until a package owner approves it with 2FA:"
+            echo
+            echo "- npmjs.com → \`@kinescope/player-iframe-api-loader\` → **Staged Packages** → **Approve**, or"
+            if [ -n "$STAGE_ID" ]; then
+              echo "- \`npm stage approve $STAGE_ID\` (npm >= 11.15.0, logged in as an owner)."
+              echo
+              echo "Inspect before approving: \`npm stage view $STAGE_ID\`, \`npm stage download $STAGE_ID\`."
+            else
+              echo "- \`npm stage list @kinescope/player-iframe-api-loader\`, then \`npm stage approve <stage-id>\`."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
