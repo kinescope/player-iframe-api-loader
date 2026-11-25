@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.10.0](https://github.com/kinescope/player-iframe-api-loader/compare/v0.9.0...v0.10.0) (2026-11-25)
+
+
+### Features
+
+* publish ESM and CommonJS builds with an exports map ([5182107](https://github.com/kinescope/player-iframe-api-loader/commit/5182107db0bc7235a0150a876afca018664a17d1))
+* update types to the current player API ([5b1b02c](https://github.com/kinescope/player-iframe-api-loader/commit/5b1b02cb781127ca3e37db5a08f41e03914bc740))
+
+
+### Bug Fixes
+
+* load() no longer hangs when the script fails or does not initialize the API ([c9319b6](https://github.com/kinescope/player-iframe-api-loader/commit/c9319b62157deb7fce7b5d4312bf2d34712e72b7))
+* **react:** do not reuse the iframe until the previous player is destroyed and unloaded ([a73ffe5](https://github.com/kinescope/player-iframe-api-loader/commit/a73ffe5017ebc35f8950e6c3ec5403718a7285f3))
+
+
+### Continuous Integration
+
+* checks for pull requests, npm trusted publishing with staged packages ([cff3b38](https://github.com/kinescope/player-iframe-api-loader/commit/cff3b38345bf712e091923002a4eb3f6679c913a))
+
 ## [0.9.0](https://github.com/kinescope/player-iframe-api-loader/compare/v0.8.0...v0.9.0) (2025-12-05)
 
 
